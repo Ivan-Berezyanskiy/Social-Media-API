@@ -1,3 +1,6 @@
 from django.urls import path
 
-# Create your ulrs here.
+urlpatterns = [
+]
+
+app_name = "post"
