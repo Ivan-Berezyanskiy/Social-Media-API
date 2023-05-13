@@ -29,9 +29,12 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Post.objects.all()
+        title = self.request.query_params.get("title")
         hashtags = self.request.query_params.get("hashtags")
         if hashtags:
             queryset = queryset.filter(hashtags__in=hashtags)
+        if title:
+            queryset = queryset.filter(title__icontains=title)
         return queryset
 
     def perform_create(self, serializer):
