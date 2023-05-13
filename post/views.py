@@ -4,7 +4,7 @@ from post.models import Post, Hashtag
 from post.serializers import (
     PostSerializer,
     PostCreateSerializer,
-    HashtagSerializer,
+    HashtagSerializer, PostDetailSerializer,
 )
 
 
@@ -25,10 +25,12 @@ class PostViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action in ("create", "put", "patch"):
             return PostCreateSerializer
+        if self.action == "retrieve":
+            return PostDetailSerializer
         return PostSerializer
 
     def get_queryset(self):
-        queryset = Post.objects.all()
+        queryset = Post.objects.prefetch_related("hashtags")
         title = self.request.query_params.get("title")
         hashtags = self.request.query_params.get("hashtags")
         if hashtags:

@@ -10,9 +10,10 @@ class HashtagSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    hashtags = HashtagSerializer(
+    hashtags = serializers.SlugRelatedField(
         many=True,
         read_only=True,
+        slug_field="name"
     )
 
     class Meta:
@@ -31,6 +32,13 @@ class PostSerializer(serializers.ModelSerializer):
             "user",
             "hashtags",
         )
+
+
+class PostDetailSerializer(PostSerializer):
+    hashtags = HashtagSerializer(
+        many=True,
+        read_only=True,
+    )
 
 
 class PostCreateSerializer(serializers.ModelSerializer):
